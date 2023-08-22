@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "barch-py"
+version = "0.1.0"
+description = ""
+authors = ["Sagar <67011477+thevenuz@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "barch"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.8.5"
+attrs = "^23.1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
