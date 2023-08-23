@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import TypeVar, Any
 
 from barch.models import Character, Terrain, TerrainDetails
-
+from barch.enums import Position, Role, Rarity
 
 T = TypeVar("T")
 
@@ -64,6 +64,10 @@ class Serializer:
 
         character = Character()
 
+        character.position = Position.from_str(data.get("position", None))
+        character.role = Role.from_str(data.get("role", None))
+        character.rarity = Rarity.try_from_str(data.get("role", None))
+
         character.terrain = self._deserialize_terrain(data.get("terrain", {}))
 
         self._set_attrs_cased(
@@ -72,10 +76,7 @@ class Serializer:
             "id",
             "name",
             "profile",
-            "rarity",
             "base_star",
-            "position",
-            "role",
             "armor_type",
             "bullet_type",
             "weapon_type",

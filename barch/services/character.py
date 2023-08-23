@@ -33,3 +33,16 @@ class CharacterService(BaseService):
         return Success(
             [self._serializer.deserialize_character(element) for element in result.data]
         )
+
+    async def get_all_characters_jp(self) -> ResultT[list[Character]]:
+        """"""
+
+        route = endpoints.GET_ALL_CHARACTERS_JP.generate_route()
+        result = await self._http.fetch(route)
+
+        if isinstance(result, HttpErrorResponse):
+            return Error(result)
+
+        return Success(
+            [self._serializer.deserialize_character(element) for element in result.data]
+        )

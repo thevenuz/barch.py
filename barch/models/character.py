@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Any
 
 from .base import BaseModel
+from barch.enums import Position, Role
 
 import attrs
 
@@ -24,9 +25,9 @@ class Character(BaseModel):
 
     base_star: int
 
-    position: str
+    position: Position
 
-    role: str
+    role: Role
     # TODO: check enums
 
     armor_type: str
