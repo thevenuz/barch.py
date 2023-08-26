@@ -14,9 +14,9 @@ RAIDURL: Final[str] = f"{BASEURL}/raid"
 JP_SUFFIX: Final[str] = f"?region=japan"
 
 GET_ALL_CHARACTERS: Final[Route] = Route("GET", f"{CHARACTERURL}")
-GET_ALL_CHARACTERS_JP: Final[Route] = Route("GET", f"{GET_ALL_CHARACTERS}{JP_SUFFIX}")
+GET_ALL_CHARACTERS_JP: Final[Route] = Route("GET", f"{CHARACTERURL}{JP_SUFFIX}")
 
-GET_CHARACTER: Final[str] = Route("GET", f"{CHARACTERURL}/()")
-GET_CHARACTER_JP: Final[str] = Route("GET", f"{CHARACTERURL}/(){JP_SUFFIX}")
+GET_CHARACTER: Final[Route] = Route("GET", f"{CHARACTERURL}/()")
+GET_CHARACTER_JP: Final[Route] = Route("GET", f"{CHARACTERURL}/(){JP_SUFFIX}")
 
-# GET_CHARACTER_BY_ROLE: Final[str] = f"{QUERYURL}role=()"
+GET_CHARACTER_QUERY: Final[Route] = Route("GET", f"{CHARACTERURL}/query")

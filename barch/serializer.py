@@ -3,7 +3,19 @@
 from __future__ import annotations
 from typing import TypeVar, Any
 
-from barch.models import Character, Terrain, TerrainDetails
+from barch.models import (
+    Character,
+    Terrain,
+    TerrainDetails,
+    CharacterDetails,
+    CharacterInfo,
+    Image,
+    Stats,
+    Skills,
+    CommonModel,
+    BaseCharacter,
+    Characters,
+)
 from barch.enums import Position, Role, Rarity
 
 T = TypeVar("T")
@@ -66,7 +78,7 @@ class Serializer:
 
         character.position = Position.from_str(data.get("position", None))
         character.role = Role.from_str(data.get("role", None))
-        character.rarity = Rarity.try_from_str(data.get("role", None))
+        character.rarity = Rarity.try_from_str(data.get("rarity", None))
 
         character.terrain = self._deserialize_terrain(data.get("terrain", {}))
 
@@ -85,3 +97,148 @@ class Serializer:
         )
 
         return character
+
+    def deserialize_character_info(self, data: dict[str, Any]) -> CharacterInfo:
+        """"""
+        charcter_info = CharacterInfo()
+
+        self._set_attrs_cased(
+            charcter_info,
+            data,
+            "age",
+            "birth_date",
+            "height",
+            "artist",
+            "club",
+            "school",
+            "school_year",
+            "voice_actor",
+        )
+
+        return charcter_info
+
+    def deserialize_stats(self, data: dict[str, Any]) -> Stats:
+        """"""
+
+        character_stats = Stats()
+
+        self._set_attrs_cased(
+            character_stats,
+            data,
+            "id",
+            "attack_level1",
+            "attack_level100",
+            "defense_level1",
+            "defense_level100",
+            "heal_power_level1",
+            "heal_power_level100",
+            "def_penetrate_level1",
+            "def_penetrate_level100",
+            "ammo_count",
+            "ammo_cost",
+            "range",
+            "move_speed",
+            "street_mood",
+            "outdoor_mood",
+            "indoor_mood",
+        )
+
+        setattr(character_stats, "max_hp_level1", data["maxHPLevel1"])
+        setattr(character_stats, "max_hp_level100", data["maxHPLevel100"])
+
+        return character_stats
+
+    def deserialize_skills_details(self, data: dict[str, Any]) -> CommonModel:
+        """"""
+
+        return [
+            CommonModel(
+                skill.get("id"), skill.get("name"), skill.get("description", "")
+            )
+            for skill in data
+        ]
+
+    def deserialize_skills(self, data: dict[str, Any]) -> Skills:
+        """"""
+
+        character_skills = Skills()
+
+        if data.get("ex", None):
+            character_skills.ex = self.deserialize_skills_details(data.get("ex", [])[0])
+
+        if data.get("normal", None):
+            character_skills.normal = self.deserialize_skills_details(
+                data.get("normal", [])[0]
+            )
+
+        if data.get("passive", None):
+            character_skills.passive = self.deserialize_skills_details(
+                data.get("passive", [])[0]
+            )
+
+        if data.get("sub", None):
+            character_skills.sub = self.deserialize_skills_details(
+                data.get("sub", [])[0]
+            )
+
+        return character_skills
+
+    def deserialize_image(self, data: dict[str, Any]) -> Image:
+        """"""
+
+        return Image(
+            data.get("icon", ""),
+            data.get("portrait", ""),
+            data.get("lobby", ""),
+        )
+
+    def deserialize_base_character(self, data: dict[str, Any]) -> BaseCharacter:
+        """"""
+
+        character = BaseCharacter()
+
+        character.position = Position.from_str(data.get("position", None))
+        character.role = Role.from_str(data.get("role", None))
+        character.rarity = Rarity.try_from_str(data.get("rarity", None))
+
+        self._set_attrs_cased(
+            character,
+            data,
+            "name",
+            "profile",
+            "base_star",
+            "armor_type",
+            "bullet_type",
+            "weapon_type",
+            "squad_type",
+        )
+
+        return character
+
+    def deserialize_character_details(self, data: dict[str, Any]) -> CharacterDetails:
+        """"""
+
+        charcter_details = CharacterDetails()
+
+        charcter_details.character = self.deserialize_base_character(
+            data.get("character", {})
+        )
+
+        charcter_details.info = self.deserialize_character_info(data.get("info", {}))
+        charcter_details.stat = self.deserialize_stats(data.get("stat", {}))
+        charcter_details.terrain = self._deserialize_terrain(data.get("terrain", {}))
+
+        charcter_details.image = self.deserialize_image(data.get("image", {}))
+
+        charcter_details.skills = self.deserialize_skills(data.get("skills", {}))
+
+        self._set_attrs_cased(
+            charcter_details, data, "id", "is_released", "is_playable"
+        )
+
+        return charcter_details
+
+    def deserialize_characters_from_query(self, data: dict[str, Any]) -> Characters:
+        """"""
+
+        return Characters(data.get("id"), data.get("name"))
