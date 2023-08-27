@@ -11,6 +11,7 @@ from barch.models import (
     CharacterDetails,
     Characters,
 )
+from barch.enums import Role, Position
 from barch import endpoints
 from barch.result import Result, Success, Error
 
@@ -121,11 +122,11 @@ class CharacterService(BaseService):
 
     async def get_character_by_query(
         self,
-        role: str | None = None,
+        role: Role | None = None,
         type: str | None = None,
         school: str | None = None,
         club: str | None = None,
-        position: str | None = None,
+        position: Position | None = None,
         weapon: str | None = None,
         damage: str | None = None,
         armor: str | None = None,
@@ -134,11 +135,11 @@ class CharacterService(BaseService):
 
         if any([role, type, school, club, position, weapon, damage, armor]):
             params = {
-                "role": role if role else "",
+                "role": role.value if role else "",
                 "type": type if type else "",
                 "school": school if school else "",
                 "club": club if club else "",
-                "position": position if position else "",
+                "position": position.value if position else "",
                 "weapon": weapon if weapon else "",
                 "damage": damage if damage else "",
                 "armor": armor if armor else "",

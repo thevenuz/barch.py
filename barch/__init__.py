@@ -28,6 +28,9 @@ __all__ = (
     "Serializer",
     "CharacterDetails",
     "Characters",
+    "Position",
+    "Role",
+    "Rarity",
 )
 
 from .models import *
@@ -35,3 +38,4 @@ from .services import *
 from .client import *
 from .result import *
 from .serializer import *
+from .enums import *
