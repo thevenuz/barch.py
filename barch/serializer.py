@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from typing import TypeVar, Any
+from datetime import datetime
 
 from barch.models import (
     Character,
@@ -15,6 +16,8 @@ from barch.models import (
     CommonModel,
     BaseCharacter,
     Characters,
+    Raid,
+    Raids,
 )
 from barch.enums import Position, Role, Rarity
 
@@ -27,6 +30,9 @@ class Serializer:
     """Deserializes JSON data to models."""
 
     __slots__ = ()
+
+    def _datetime_from_unix_ms(self, datetime_str: str | int | None) -> datetime | None:
+        return datetime.utcfromtimestamp(datetime_str/1000) if datetime_str else None
 
     def _to_camel_case(self, attr: str) -> str:
         """"""
@@ -242,3 +248,32 @@ class Serializer:
         """"""
 
         return Characters(data.get("id"), data.get("name"))
+
+    def deserialize_raid(self, data: dict[str, Any]) -> Raid:
+        """"""
+
+        raid = Raid()
+
+        raid.start_at = self._datetime_from_unix_ms(data.get("startAt", None))
+        raid.settle_at = self._datetime_from_unix_ms(data.get("settleAt", None))
+        raid.end_at = self._datetime_from_unix_ms(data.get("endAt", None))
+
+        self._set_attrs_cased(raid, data, "season_id", "boss_name")
+
+        return raid
+
+    def deserialize_raids(self, data: dict[str, Any]) -> Raids:
+        """"""
+
+        raids = Raids()
+        raids.current = [
+            self.deserialize_raid(raid) for raid in data.get("current", [])
+        ]
+
+        raids.upcoming = [
+            self.deserialize_raid(raid) for raid in data.get("upcoming", [])
+        ]
+
+        raids.ended = [self.deserialize_raid(raid) for raid in data.get("ended", [])]
+
+        return raids

@@ -18,8 +18,11 @@ __all__ = (
     "CommonModel",
     "Skills",
     "Characters",
+    "Raid",
+    "Raids",
 )
 
 from .route import *
 from .http import *
 from .character import *
+from .raid import *

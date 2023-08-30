@@ -20,3 +20,6 @@ GET_CHARACTER: Final[Route] = Route("GET", f"{CHARACTERURL}/()")
 GET_CHARACTER_JP: Final[Route] = Route("GET", f"{CHARACTERURL}/(){JP_SUFFIX}")
 
 GET_CHARACTER_QUERY: Final[Route] = Route("GET", f"{CHARACTERURL}/query")
+
+GET_RAIDS: Final[Route] = Route("GET", f"{RAIDURL}")
+GET_RAIDS_JP: Final[Route] = Route("GET", f"{RAIDURL}{JP_SUFFIX}")
