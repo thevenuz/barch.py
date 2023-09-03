@@ -6,7 +6,6 @@ from typing import TypeVar
 from .base import BaseService
 from barch.models import (
     HttpErrorResponse,
-    HttpSuccessResponse,
     Character,
     CharacterDetails,
     Characters,
@@ -28,14 +27,12 @@ class CharacterService(BaseService):
 
     __slots__ = ()
 
-    async def _get_all_characters(
-        self, is_jp: bool = False
-    ) -> ResultT[list[Character]]:
-        """Internal method for getting all character details which is used by the 
+    async def _get_all_characters(self, is_jp: bool = False) -> ResultT[list[Character]]:
+        """Internal method for getting all character details which is used by the
         EN and JP version service methods.
 
         Keyword Args:
-            is_jp: the optional boolean flag, which specifies if the character details need to be fetched 
+            is_jp: the optional boolean flag, which specifies if the character details need to be fetched
                 in EN or JP version.
 
         Returns:
@@ -58,7 +55,7 @@ class CharacterService(BaseService):
 
     async def get_all_characters(self) -> ResultT[list[Character]]:
         """Get all the characters with details EN version.
-        
+
         Returns:
             [`Result`][barch.Result] containing `list[Character]` on success or error data on error.
 
@@ -85,7 +82,7 @@ class CharacterService(BaseService):
 
     async def get_all_characters_jp(self) -> ResultT[list[Character]]:
         """Get all the characters with details japanese version.
-        
+
         Returns:
             [`Result`][barch.Result] containing `list[Character]` on success or error data on error.
 
@@ -126,18 +123,20 @@ class CharacterService(BaseService):
 
         """
 
+        params: dict = {}
+
         if id:
-            params = {"id": "true"}
+            params.update({"id": "true"})
 
         if is_jp:
-            route = endpoints.GET_CHARACTER_JP.generate_route(
-                name if name else id
-            ).with_params(params if params else None)
+            route = endpoints.GET_CHARACTER_JP.generate_route(name if name else id).with_params(
+                params if params else None
+            )
 
         else:
-            route = endpoints.GET_CHARACTER.generate_route(
-                name if name else id
-            ).with_params(params if params else None)
+            route = endpoints.GET_CHARACTER.generate_route(name if name else id).with_params(
+                params if params else None
+            )
 
         result = await self._http.fetch(route)
 
@@ -149,7 +148,7 @@ class CharacterService(BaseService):
     async def get_character(
         self, name: str | None = None, id: int | None = None
     ) -> ResultT[CharacterDetails]:
-        """Get a single character either by name or id, EN version. 
+        """Get a single character either by name or id, EN version.
         Atleast one parameter, either name or id need to be specified.
 
         Keyword Args:
@@ -190,7 +189,7 @@ class CharacterService(BaseService):
     async def get_character_jp(
         self, name: str | None = None, id: int | None = None
     ) -> ResultT[CharacterDetails]:
-        """Get a single character either by name or id, JP version. 
+        """Get a single character either by name or id, JP version.
         Atleast one parameter, either name or id need to be specified.
 
         Keyword Args:
@@ -231,8 +230,8 @@ class CharacterService(BaseService):
         damage: str | None = None,
         armor: str | None = None,
     ) -> ResultT[Characters]:
-        """Get a single character details based on different parameters. 
-        Atleast one parameter must be specified. Multiple parameters can be specified 
+        """Get a single character details based on different parameters.
+        Atleast one parameter must be specified. Multiple parameters can be specified
         to get characters based on different filters.
 
         Keyword Args:
@@ -271,10 +270,7 @@ class CharacterService(BaseService):
                 return Error(result)
 
             return Success(
-                [
-                    self._serializer.deserialize_characters_from_query(char)
-                    for char in result.data
-                ]
+                [self._serializer.deserialize_characters_from_query(char) for char in result.data]
             )
 
         else:

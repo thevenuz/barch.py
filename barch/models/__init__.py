@@ -22,6 +22,7 @@ __all__ = (
     "Raids",
 )
 
+
 from .route import *
 from .http import *
 from .character import *

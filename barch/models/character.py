@@ -212,13 +212,13 @@ class CommonModel(BaseModel):
 class Skills(BaseModel):
     """Represents Skills model."""
 
-    ex: list[CommonModel]
+    ex: list[CommonModel] | None = attrs.field(default=None)
 
-    normal: list[CommonModel]
+    normal: list[CommonModel] | None = attrs.field(default=None)
 
-    passive: list[CommonModel]
+    passive: list[CommonModel] | None = attrs.field(default=None)
 
-    sub: list[CommonModel]
+    sub: list[CommonModel] | None = attrs.field(default=None)
 
 
 @attrs.define

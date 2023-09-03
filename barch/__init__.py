@@ -4,6 +4,11 @@ from __future__ import annotations
 
 
 __all__ = (
+    "Client",
+    "Result",
+    "Success",
+    "Error",
+    "Serializer",
     "HttpService",
     "CharacterService",
     "BaseService",
@@ -24,12 +29,6 @@ __all__ = (
     "Skills",
     "Raid",
     "Raids",
-    "Client",
-    "Result",
-    "Success",
-    "Error",
-    "Serializer",
-    "CharacterDetails",
     "Characters",
     "Position",
     "Role",
