@@ -33,8 +33,8 @@ class Serializer:
 
     def _datetime_from_unix_ms(self, datetime_str: str | int | None) -> datetime | None:
         """Converts unix timestamp in milliseconds to UTC datetime."""
-        
-        return datetime.utcfromtimestamp(datetime_str/1000) if datetime_str else None
+
+        return datetime.utcfromtimestamp(datetime_str / 1000) if datetime_str else None
 
     def _to_camel_case(self, attr: str) -> str:
         """Converts input arguments to camel case."""
@@ -162,9 +162,7 @@ class Serializer:
         """Deserializes JSON payload into `CommonModel` model."""
 
         return [
-            CommonModel(
-                skill.get("id"), skill.get("name"), skill.get("description", "")
-            )
+            CommonModel(skill.get("id"), skill.get("name"), skill.get("description", ""))
             for skill in data
         ]
 
@@ -173,23 +171,29 @@ class Serializer:
 
         character_skills = Skills()
 
-        if data.get("ex", None):
-            character_skills.ex = self.deserialize_skills_details(data.get("ex", [])[0])
+        character_skills.ex = (
+            self.deserialize_skills_details(data.get("ex", [])[0])
+            if data.get("ex", None)
+            else None
+        )
 
-        if data.get("normal", None):
-            character_skills.normal = self.deserialize_skills_details(
-                data.get("normal", [])[0]
-            )
+        character_skills.normal = (
+            self.deserialize_skills_details(data.get("normal", [])[0])
+            if data.get("normal", None)
+            else None
+        )
 
-        if data.get("passive", None):
-            character_skills.passive = self.deserialize_skills_details(
-                data.get("passive", [])[0]
-            )
+        character_skills.passive = (
+            self.deserialize_skills_details(data.get("passive", [])[0])
+            if data.get("passive", None)
+            else None
+        )
 
-        if data.get("sub", None):
-            character_skills.sub = self.deserialize_skills_details(
-                data.get("sub", [])[0]
-            )
+        character_skills.sub = (
+            self.deserialize_skills_details(data.get("sub", [])[0])
+            if data.get("sub", None)
+            else None
+        )
 
         return character_skills
 
@@ -230,9 +234,7 @@ class Serializer:
 
         charcter_details = CharacterDetails()
 
-        charcter_details.character = self.deserialize_base_character(
-            data.get("character", {})
-        )
+        charcter_details.character = self.deserialize_base_character(data.get("character", {}))
 
         charcter_details.info = self.deserialize_character_info(data.get("info", {}))
         charcter_details.stat = self.deserialize_stats(data.get("stat", {}))
@@ -242,9 +244,7 @@ class Serializer:
 
         charcter_details.skills = self.deserialize_skills(data.get("skills", {}))
 
-        self._set_attrs_cased(
-            charcter_details, data, "id", "is_released", "is_playable"
-        )
+        self._set_attrs_cased(charcter_details, data, "id", "is_released", "is_playable")
 
         return charcter_details
 
@@ -270,13 +270,9 @@ class Serializer:
         """Deserializes JSON payload into `Raids` model."""
 
         raids = Raids()
-        raids.current = [
-            self.deserialize_raid(raid) for raid in data.get("current", [])
-        ]
+        raids.current = [self.deserialize_raid(raid) for raid in data.get("current", [])]
 
-        raids.upcoming = [
-            self.deserialize_raid(raid) for raid in data.get("upcoming", [])
-        ]
+        raids.upcoming = [self.deserialize_raid(raid) for raid in data.get("upcoming", [])]
 
         raids.ended = [self.deserialize_raid(raid) for raid in data.get("ended", [])]
 
