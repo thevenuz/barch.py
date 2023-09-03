@@ -19,15 +19,21 @@ class Client:
 
     @property
     def character(self) -> services.CharacterService:
-        """"""
+        """The [`CharacterService`][barch.CharacterService] used to make character related requests."""
+
         return self._character
 
     @property
     def raid(self) -> services.RaidService:
-        """"""
+        """The [`RaidService`][barch.RaidService] used to make raid related requests."""
 
         return self._raid
 
     async def close(self) -> None:
-        """"""
+        """Close the existing client session.
+
+        !!! warning
+
+            You will receive an error in your console if this is not called before the program terminates."""
+        
         await self._http.close()

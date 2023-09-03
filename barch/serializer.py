@@ -32,10 +32,12 @@ class Serializer:
     __slots__ = ()
 
     def _datetime_from_unix_ms(self, datetime_str: str | int | None) -> datetime | None:
+        """Converts unix timestamp in milliseconds to UTC datetime."""
+        
         return datetime.utcfromtimestamp(datetime_str/1000) if datetime_str else None
 
     def _to_camel_case(self, attr: str) -> str:
-        """"""
+        """Converts input arguments to camel case."""
         first, *rest = attr.split("_")
         return "".join((first.lower(), *map(str.title, rest)))
 
@@ -54,11 +56,12 @@ class Serializer:
                     setattr(model, attr, None)
 
     def _set_attrs_cased(self, model: Any, data: dict[str, Any], *attrs: str) -> None:
-        """"""
+        """Generate model from JSON payload when input arguments need to be changed to camel case."""
+
         return self._set_attrs(model, data, *attrs, camel_case=True)
 
     def _deserialize_terrain(self, data: dict[str, Any]) -> Terrain:
-        """"""
+        """Deserializes JSON payload into `Terrain` model."""
 
         terrain = Terrain()
 
@@ -69,7 +72,7 @@ class Serializer:
         return terrain
 
     def _deserialize_terrain_details(self, data: dict[str, Any]) -> TerrainDetails:
-        """"""
+        """Deserializes JSON payload into `TerrainDetails` model."""
 
         terrain_details = TerrainDetails(
             data.get("DamageDealt", ""), data.get("ShieldBlockRate", "")
@@ -78,7 +81,7 @@ class Serializer:
         return terrain_details
 
     def deserialize_character(self, data: dict[str, Any]) -> Character:
-        """"""
+        """Deserializes JSON payload into `Character` model."""
 
         character = Character()
 
@@ -105,7 +108,8 @@ class Serializer:
         return character
 
     def deserialize_character_info(self, data: dict[str, Any]) -> CharacterInfo:
-        """"""
+        """Deserializes JSON payload into `CharacterInfo` model."""
+
         charcter_info = CharacterInfo()
 
         self._set_attrs_cased(
@@ -124,7 +128,7 @@ class Serializer:
         return charcter_info
 
     def deserialize_stats(self, data: dict[str, Any]) -> Stats:
-        """"""
+        """Deserializes JSON payload into `Stats` model."""
 
         character_stats = Stats()
 
@@ -155,7 +159,7 @@ class Serializer:
         return character_stats
 
     def deserialize_skills_details(self, data: dict[str, Any]) -> CommonModel:
-        """"""
+        """Deserializes JSON payload into `CommonModel` model."""
 
         return [
             CommonModel(
@@ -165,7 +169,7 @@ class Serializer:
         ]
 
     def deserialize_skills(self, data: dict[str, Any]) -> Skills:
-        """"""
+        """Deserializes JSON payload into `Skills` model."""
 
         character_skills = Skills()
 
@@ -190,7 +194,7 @@ class Serializer:
         return character_skills
 
     def deserialize_image(self, data: dict[str, Any]) -> Image:
-        """"""
+        """Deserializes JSON payload into `Image` model."""
 
         return Image(
             data.get("icon", ""),
@@ -199,7 +203,7 @@ class Serializer:
         )
 
     def deserialize_base_character(self, data: dict[str, Any]) -> BaseCharacter:
-        """"""
+        """Deserializes JSON payload into `BaseCharacter` model."""
 
         character = BaseCharacter()
 
@@ -222,7 +226,7 @@ class Serializer:
         return character
 
     def deserialize_character_details(self, data: dict[str, Any]) -> CharacterDetails:
-        """"""
+        """Deserializes JSON payload into `CharacterDetails` model."""
 
         charcter_details = CharacterDetails()
 
@@ -245,12 +249,12 @@ class Serializer:
         return charcter_details
 
     def deserialize_characters_from_query(self, data: dict[str, Any]) -> Characters:
-        """"""
+        """Deserializes JSON payload into `Characters` model."""
 
         return Characters(data.get("id"), data.get("name"))
 
     def deserialize_raid(self, data: dict[str, Any]) -> Raid:
-        """"""
+        """Deserializes JSON payload into `Raid` model."""
 
         raid = Raid()
 
@@ -263,7 +267,7 @@ class Serializer:
         return raid
 
     def deserialize_raids(self, data: dict[str, Any]) -> Raids:
-        """"""
+        """Deserializes JSON payload into `Raids` model."""
 
         raids = Raids()
         raids.current = [

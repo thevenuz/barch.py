@@ -8,7 +8,7 @@ __all__ = ("Position", "Role", "Rarity")
 
 
 class Position(BaseEnum):
-    """"""
+    """Represents position of the character."""
 
     Back = "Back"
 
@@ -18,7 +18,7 @@ class Position(BaseEnum):
 
 
 class Role(BaseEnum):
-    """"""
+    """Represents role of the character."""
 
     Dealer = "Dealer"
 
@@ -32,7 +32,7 @@ class Role(BaseEnum):
 
 
 class Rarity(BaseEnum):
-    """"""
+    """Represents the rarity of the character."""
 
     Rare = "R"
 

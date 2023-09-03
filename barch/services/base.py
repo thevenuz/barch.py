@@ -16,6 +16,7 @@ class BaseService(abc.ABC):
 
     Args:
         http_service: The http service to use for requests.
+        serializer: The serializer used for deserializing API JSON data.
     """
 
     __slots__ = ("_http", "_serializer")

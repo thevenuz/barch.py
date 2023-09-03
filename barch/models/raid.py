@@ -12,7 +12,7 @@ __all__ = ("Raid", "Raids")
 
 @attrs.define(init=False)
 class Raid(BaseModel):
-    """"""
+    """Represents Raid model which contains individual raid details.."""
 
     season_id: int | None = attrs.field(default=None)
 
@@ -27,7 +27,7 @@ class Raid(BaseModel):
 
 @attrs.define(init=False)
 class Raids(BaseModel):
-    """"""
+    """Represents Raids model."""
 
     current: list[Raid] | None = attrs.field(default=None)
 

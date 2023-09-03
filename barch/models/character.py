@@ -28,24 +28,34 @@ class BaseCharacter(BaseModel):
     """Represents base character model."""
 
     name: str
+    """Name of the character."""
 
     profile: str
+    """Profile description of the character."""
 
     rarity: Rarity
+    """Rarity of the character."""
 
     base_star: int
+    """Base star."""
 
     position: Position
+    """Position of the character."""
 
     role: Role
+    """Role of the character."""
 
     armor_type: str
+    """Armor type of the character."""
 
     bullet_type: str
+    """Bullet type of the character."""
 
     weapon_type: str
+    """Weapon type of the character."""
 
     squad_type: str
+    """Squad type."""
 
 
 @attrs.define(init=False)
@@ -53,58 +63,48 @@ class Character(BaseCharacter):
     """Represents character model."""
 
     id: int
-
-    # name: str
-
-    # profile: str
-
-    # rarity: Rarity
-
-    # base_star: int
-
-    # position: Position
-
-    # role: Role
-    # TODO: check enums
-
-    # armor_type: str
-
-    # bullet_type: str
-
-    # weapon_type: str
-
-    # squad_type: str
+    """Id of the character."""
 
     school: str
+    """The school to which the character belongs to."""
 
     terrain: Terrain
+    """The terrain details."""
 
 
 @attrs.define(init=False)
 class CharacterInfo(BaseModel):
-    """"""
+    """Represents CharacterInfo model."""
 
     age: int
     # TODO: string to int
+    """The age of the character."""
 
     birth_date: str
+    """The birth date of the character."""
 
     height: str
+    """The height of the character."""
 
     artist: str
+    """The designer or illustrator of the character."""
 
     club: str
+    """The club to which the character belongs."""
 
     school: str
+    """The school to which the character belongs."""
 
     school_year: str
+    """The school year of the character."""
 
     voice_actor: str
+    """The voice actor of the character."""
 
 
 @attrs.define
 class Image(BaseModel):
-    """"""
+    """Represents image model."""
 
     icon: str
 
@@ -115,7 +115,7 @@ class Image(BaseModel):
 
 @attrs.define(init=False)
 class CharacterDetails(BaseModel):
-    """"""
+    """Represents Character Details model."""
 
     id: int
 
@@ -138,7 +138,7 @@ class CharacterDetails(BaseModel):
 
 @attrs.define(init=False)
 class Terrain(BaseModel):
-    """"""
+    """Represents Terrain model."""
 
     urban: TerrainDetails
 
@@ -149,7 +149,7 @@ class Terrain(BaseModel):
 
 @attrs.define
 class TerrainDetails(BaseModel):
-    """"""
+    """Represents TerrainDetails model."""
 
     damage_dealt: str
 
@@ -158,7 +158,7 @@ class TerrainDetails(BaseModel):
 
 @attrs.define(init=False)
 class Stats(BaseModel):
-    """"""
+    """Represents Stats model."""
 
     id: int
 
@@ -199,7 +199,7 @@ class Stats(BaseModel):
 
 @attrs.define
 class CommonModel(BaseModel):
-    """"""
+    """Represents a CommonModel model which is used in multiple classes."""
 
     id: int
 
@@ -210,7 +210,7 @@ class CommonModel(BaseModel):
 
 @attrs.define(init=False)
 class Skills(BaseModel):
-    """"""
+    """Represents Skills model."""
 
     ex: list[CommonModel]
 
@@ -223,7 +223,7 @@ class Skills(BaseModel):
 
 @attrs.define
 class Characters(BaseModel):
-    """"""
+    """Represents Characters model."""
 
     id: int
 

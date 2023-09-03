@@ -31,7 +31,16 @@ class CharacterService(BaseService):
     async def _get_all_characters(
         self, is_jp: bool = False
     ) -> ResultT[list[Character]]:
-        """"""
+        """Internal method for getting all character details which is used by the 
+        EN and JP version service methods.
+
+        Keyword Args:
+            is_jp: the optional boolean flag, which specifies if the character details need to be fetched 
+                in EN or JP version.
+
+        Returns:
+            [`Result`][barch.Result] containing `list[Character]` on success or error data on error.
+        """
 
         if is_jp:
             route = endpoints.GET_ALL_CHARACTERS_JP.generate_route()
@@ -48,39 +57,74 @@ class CharacterService(BaseService):
         )
 
     async def get_all_characters(self) -> ResultT[list[Character]]:
-        """Get all the characters with details."""
+        """Get all the characters with details EN version.
+        
+        Returns:
+            [`Result`][barch.Result] containing `list[Character]` on success or error data on error.
 
-        # route = endpoints.GET_ALL_CHARACTERS.generate_route()
-        # result = await self._http.fetch(route)
+        ??? example
 
-        # if isinstance(result, HttpErrorResponse):
-        #     return Error(result)
+            ```py
+            from barch import Client
 
-        # return Success(
-        #     [self._serializer.deserialize_character(element) for element in result.data]
-        # )
+            client = Client()
+
+            result = await client.character.get_all_characters()
+
+            if result.is_success:
+                characters = result.value
+
+            if result.is_error:
+                error = result.error
+
+            await client.close()
+            ```
+        """
 
         return await self._get_all_characters()
 
     async def get_all_characters_jp(self) -> ResultT[list[Character]]:
-        """"""
+        """Get all the characters with details japanese version.
+        
+        Returns:
+            [`Result`][barch.Result] containing `list[Character]` on success or error data on error.
 
-        # route = endpoints.GET_ALL_CHARACTERS_JP.generate_route()
-        # result = await self._http.fetch(route)
+        ??? example
 
-        # if isinstance(result, HttpErrorResponse):
-        #     return Error(result)
+            ```py
+            from barch import Client
 
-        # return Success(
-        #     [self._serializer.deserialize_character(element) for element in result.data]
-        # )
+            client = Client()
+
+            result = await client.get_all_characters_jp()
+
+            if result.is_success:
+                characters = result.value
+
+            if result.is_error:
+                error = result.error
+
+            await client.close()
+        """
 
         return await self._get_all_characters(is_jp=True)
 
     async def _get_character(
         self, name: str | None = None, id: int | None = None, is_jp: bool = False
     ) -> ResultT[CharacterDetails]:
-        """"""
+        """Internal method used to get a single character details, which is used by both EN and JP versions.
+
+        Keyword Args:
+            name: The optional name of the chracter either for EN and JP version.
+
+            id: The optional id of the character.
+
+            is_jp: The optional is_jp flag which specifies if the character details need to be fetched in EN or JP version.
+
+        Returns:
+            [`Result`][barch.Result] containing `CharacterDetails` on success or error data on error.
+
+        """
 
         if id:
             params = {"id": "true"}
@@ -105,7 +149,37 @@ class CharacterService(BaseService):
     async def get_character(
         self, name: str | None = None, id: int | None = None
     ) -> ResultT[CharacterDetails]:
-        """"""
+        """Get a single character either by name or id, EN version. 
+        Atleast one parameter, either name or id need to be specified.
+
+        Keyword Args:
+            name: The optional name of the character.
+            id: The optional id of the character.
+
+        Returns:
+            [`Result`][barch.Result] containing `CharacterDetails]` on success or error data on error.
+
+        Raises:
+            ValueError: When no arguments are given
+
+        ??? example
+
+            ```py
+            from barch import Client
+
+            client = Client()
+
+            result = await client.get_character(id=10000)
+
+            if result.is_success:
+                characters = result.value
+
+            if result.is_error:
+                error = result.error
+
+            await client.close()
+            ```
+        """
 
         if name or id:
             return await self._get_character(name=name, id=id)
@@ -116,7 +190,33 @@ class CharacterService(BaseService):
     async def get_character_jp(
         self, name: str | None = None, id: int | None = None
     ) -> ResultT[CharacterDetails]:
-        """"""
+        """Get a single character either by name or id, JP version. 
+        Atleast one parameter, either name or id need to be specified.
+
+        Keyword Args:
+            name: The optional name of the character. Note that the character input name needs to be JP.
+            id: The optional id of the character.
+
+        Returns:
+            [`Result`][barch.Result] containing `CharacterDetails` on success or error data on error.
+
+        ??? example
+
+            ```py
+            from barch import Client
+
+            client = Client()
+
+            result = await client.get_character_jp(id=10000)
+
+            if result.is_success:
+                characters = result.value
+
+            if result.is_error:
+                error = result.error
+
+            await client.close()
+            ```"""
 
         return await self._get_character(name=name, id=id, is_jp=True)
 
@@ -131,7 +231,26 @@ class CharacterService(BaseService):
         damage: str | None = None,
         armor: str | None = None,
     ) -> ResultT[Characters]:
-        """"""
+        """Get a single character details based on different parameters. 
+        Atleast one parameter must be specified. Multiple parameters can be specified 
+        to get characters based on different filters.
+
+        Keyword Args:
+            role: The optional `Role` enum parameter, which gets characters by role.
+            type: The optional `type` parameter, which gets characters by the type.
+            school: The optional `school` parameter, which gets characters by their school.
+            club: The optional `club` parameter, which gets characters by their club.
+            position: The optional `Position` enum parameter, which gets characters by their position.
+            weapon: The optional `weapon` parameter, which gets characters by their weapon.
+            damage: The optional `damage` parameter.
+            armor: The optional `armor` parameter.
+
+        Returns:
+            [`Result`][barch.Result] containing `Characters` on success or error data on error.
+
+        Raises:
+            ValueError: When no arguments are given.
+        """
 
         if any([role, type, school, club, position, weapon, damage, armor]):
             params = {
