@@ -27,7 +27,9 @@ class CharacterService(BaseService):
 
     __slots__ = ()
 
-    async def _get_all_characters(self, is_jp: bool = False) -> ResultT[list[Character]]:
+    async def _get_all_characters(
+        self, is_jp: bool = False
+    ) -> ResultT[list[Character]]:
         """Internal method for getting all character details which is used by the
         EN and JP version service methods.
 
@@ -93,7 +95,7 @@ class CharacterService(BaseService):
 
             client = Client()
 
-            result = await client.get_all_characters_jp()
+            result = await client.character.get_all_characters_jp()
 
             if result.is_success:
                 characters = result.value
@@ -129,14 +131,14 @@ class CharacterService(BaseService):
             params.update({"id": "true"})
 
         if is_jp:
-            route = endpoints.GET_CHARACTER_JP.generate_route(name if name else id).with_params(
-                params if params else None
-            )
+            route = endpoints.GET_CHARACTER_JP.generate_route(
+                name if name else id
+            ).with_params(params if params else None)
 
         else:
-            route = endpoints.GET_CHARACTER.generate_route(name if name else id).with_params(
-                params if params else None
-            )
+            route = endpoints.GET_CHARACTER.generate_route(
+                name if name else id
+            ).with_params(params if params else None)
 
         result = await self._http.fetch(route)
 
@@ -168,7 +170,7 @@ class CharacterService(BaseService):
 
             client = Client()
 
-            result = await client.get_character(id=10000)
+            result = await client.character.get_character(id=10000)
 
             if result.is_success:
                 characters = result.value
@@ -206,7 +208,7 @@ class CharacterService(BaseService):
 
             client = Client()
 
-            result = await client.get_character_jp(id=10000)
+            result = await client.character.get_character_jp(id=10000)
 
             if result.is_success:
                 characters = result.value
@@ -249,6 +251,23 @@ class CharacterService(BaseService):
 
         Raises:
             ValueError: When no arguments are given.
+
+        ??? example
+
+            ```py
+            from barch import Client, Role, Position
+
+            client = Client()
+
+            result = await client.character.get_character_by_query(role=Role.Dealer, position=Position.Back)
+
+            if result.is_success:
+                characters = result.value
+
+            if result.is_error:
+                error = result.error
+
+            await client.close()
         """
 
         if any([role, type, school, club, position, weapon, damage, armor]):
@@ -270,7 +289,10 @@ class CharacterService(BaseService):
                 return Error(result)
 
             return Success(
-                [self._serializer.deserialize_characters_from_query(char) for char in result.data]
+                [
+                    self._serializer.deserialize_characters_from_query(char)
+                    for char in result.data
+                ]
             )
 
         else:
