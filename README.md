@@ -76,3 +76,7 @@ if raids_result_jp.is_error:
 
 await  client.close()
 ```
+
+## License
+
+barch.py is licensed under [MIT License](https://github.com/thevenuz/barch.py/blob/master/LICENSE).
