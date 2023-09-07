@@ -5,6 +5,9 @@ description = "An asynchronous wrapper for the fanmade Blue Archive API."
 authors = ["thevenuz"]
 license = "MIT"
 readme = "README.md"
+homepage = "https://github.com/thevenuz/barch.py"
+repository = "https://github.com/thevenuz/barch.py"
+documentation = "https://thevenuz.github.io/barch.py/"
 packages = [{include = "barch"},{ include = "barch/py.typed" }]
 
 [tool.poetry.dependencies]
