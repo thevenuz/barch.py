@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "barch-py"
 version = "0.1.1"
-description = ""
-authors = ["Sagar <67011477+thevenuz@users.noreply.github.com>"]
+description = "An asynchronous wrapper for the fanmade Blue Archive API."
+authors = ["thevenuz"]
+license = "MIT"
 readme = "README.md"
-packages = [{include = "barch"}]
+packages = [{include = "barch"},{ include = "barch/py.typed" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
