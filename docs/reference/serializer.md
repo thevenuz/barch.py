@@ -1,3 +1,0 @@
-# serializer
-
-:::barch.serializer
